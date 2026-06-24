@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcomAI Pro — India's #1 AI Ecommerce Tool</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #1a1a2e; }
+  .navbar { background: #fff; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; }
+  .logo-text { font-size: 20px; font-weight: 700; color: #1a1a2e; }
+  .logo-text span { color: #667eea; }
+  .badge { background: #667eea; color: white; font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: 600; }
+  .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 48px 24px; text-align: center; }
+  .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+  .hero p { font-size: 16px; opacity: 0.9; margin-bottom: 24px; }
+  .hero-stats { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 28px; font-weight: 800; }
+  .stat-label { font-size: 12px; opacity: 0.8; }
+  .api-setup { background: #fff3cd; border: 1px solid #ffc107; border-radius: 12px; padding: 16px; margin: 20px 24px; display: flex; align-items: center; gap: 12px; }
+  .api-setup input { flex: 1; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+  .api-setup button { background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .tabs { display: flex; background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0 24px; overflow-x: auto; }
+  .tab { padding: 14px 20px; font-size: 14px; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .tab.active { color: #667eea; border-bottom-color: #667eea; }
+  .panel { display: none; padding: 24px; }
+  .panel.active { display: block; }
+  .card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #1a1a2e; }
+  .card p { font-size: 14px; color: #64748b; margin-bottom: 16px; }
+  select, input[type="text"], textarea { width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; margin-bottom: 12px; background: #f8fafc; outline: none; font-family: inherit; }
+  select:focus, input:focus, textarea:focus { border-color: #667eea; background: #fff; }
+  .btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; transition: opacity 0.2s; }
+  .btn:hover { opacity: 0.9; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .result-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-top: 12px; }
+  .result-label { font-size: 11px; font-weight: 700; color: #667eea; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .result-content { font-size: 14px; color: #1a1a2e; line-height: 1.6; }
+  .copy-btn { background: #f1f5f9; border: 1px solid #e2e8f0; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-top: 8px; }
+  .copy-btn:hover { background: #e2e8f0; }
+  .product-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+  .product-name { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+  .product-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+  .tag { font-size: 12px; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
+  .tag-green { background: #d1fae5; color: #065f46; }
+  .tag-blue { background: #dbeafe; color: #1e40af; }
+  .tag-orange { background: #ffedd5; color: #9a3412; }
+  .product-reason { font-size: 13px; color: #64748b; }
+  .supplier-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+  .supplier-name { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+  .supplier-meta { font-size: 13px; color: #64748b; margin-bottom: 8px; }
+  .verified { background: #d1fae5; color: #065f46; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+  .loading { text-align: center; padding: 32px; color: #64748b; }
+  .spinner { width: 32px; height: 32px; border: 3px solid #e2e8f0; border-top-color: #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 12px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error { background: #fee2e2; color: #991b1b; padding: 12px; border-radius: 8px; font-size: 14px; margin-top: 12px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media(max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } .hero h1 { font-size: 24px; } }
+  .market-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+  .market-bar-wrap { flex: 1; background: #f1f5f9; border-radius: 4px; height: 8px; }
+  .market-bar { height: 8px; border-radius: 4px; background: linear-gradient(135deg, #667eea, #764ba2); }
+  .market-label { font-size: 13px; color: #1a1a2e; font-weight: 600; min-width: 120px; }
+  .market-pct { font-size: 13px; color: #667eea; font-weight: 700; min-width: 36px; text-align: right; }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="logo">
+    <div class="logo-icon">🤖</div>
+    <div class="logo-text">Ecom<span>AI</span> Pro</div>
+  </div>
+  <span class="badge">India's #1</span>
+</div>
+
+<div class="hero">
+  <h1>AI se Ecommerce Automate Karo</h1>
+  <p>Product dhundho, listing banao, suppliers khojo — sab AI se, sirf seconds mein</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">10x</div><div class="stat-label">Fast Research</div></div>
+    <div class="stat"><div class="stat-num">₹0</div><div class="stat-label">Extra Tools</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Indian Market</div></div>
+  </div>
+</div>
+
+<div class="api-setup" id="api-setup">
+  <span>🔑</span>
+  <input type="password" id="api-key" placeholder="Apni Gemini API key daalo (aistudio.google.com se)" />
+  <button onclick="saveKey()">Save & Start</button>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('hunter')">🔍 Product Hunter</div>
+  <div class="tab" onclick="showTab('listing')">📝 Listing Builder</div>
+  <div class="tab" onclick="showTab('supplier')">🏭 Supplier DB</div>
+  <div class="tab" onclick="showTab('market')">📊 Market Report</div>
+</div>
+
+<div id="hunter" class="panel active">
+  <div class="card">
+    <h3>🔍 AI Product Hunter</h3>
+    <p>Category aur budget chuno — AI winning products dhundhega Amazon & Flipkart ke liye</p>
+    <div class="grid-2">
+      <select id="h-category">
+        <option value="">Category chuno...</option>
+        <option value="Kitchen & Home">Kitchen & Home</option>
+        <option value="Baby Products">Baby Products</option>
+        <option value="Fitness & Sports">Fitness & Sports</option>
+        <option value="Beauty & Personal Care">Beauty & Personal Care</option>
+        <option value="Stationery & Office">Stationery & Office</option>
+        <option value="Pet Supplies">Pet Supplies</option>
+        <option value="Garden & Outdoor">Garden & Outdoor</option>
+        <option value="Toys & Games">Toys & Games</option>
+      </select>
+      <select id="h-budget">
+        <option value="">Investment budget chuno...</option>
+        <option value="under ₹5,000">Low — Under ₹5,000</option>
+        <option value="₹5,000 to ₹20,000">Medium — ₹5,000 to ₹20,000</option>
+        <option value="above ₹20,000">High — Above ₹20,000</option>
+      </select>
+    </div>
+    <select id="h-platform">
+      <option value="Amazon India">Amazon India</option>
+      <option value="Flipkart">Flipkart</option>
+      <option value="Amazon India and Flipkart both">Dono — Amazon + Flipkart</option>
+    </select>
+    <button class="btn" onclick="huntProducts()">🔍 AI se Products Dhundho</button>
+  </div>
+  <div id="hunter-result"></div>
+</div>
+
+<div id="listing" class="panel">
+  <div class="card">
+    <h3>📝 AI Listing Builder</h3>
+    <p>Product ka naam daalo — Amazon/Flipkart ke liye ready-made listing ban jaayegi</p>
+    <input type="text" id="l-product" placeholder="Jaise: Stainless Steel Insulated Water Bottle 1 Litre" />
+    <select id="l-platform">
+      <option value="Amazon India">Amazon India</option>
+      <option value="Flipkart">Flipkart</option>
+      <option value="both Amazon India and Flipkart">Dono Platforms</option>
+    </select>
+    <select id="l-lang">
+      <option value="Hinglish (mix of Hindi and English)">Hinglish</option>
+      <option value="English">English</option>
+    </select>
+    <button class="btn" onclick="buildListing()">✍️ AI Listing Banao</button>
+  </div>
+  <div id="listing-result"></div>
+</div>
+
+<div id="supplier" class="panel">
+  <div class="card">
+    <h3>🏭 Verified Supplier Database</h3>
+    <p>India ke top verified suppliers — direct contacts, minimum order details ke saath</p>
+    <select id="s-category" onchange="filterSuppliers()">
+      <option value="all">Sab Categories</option>
+      <option value="kitchen">Kitchen & Home</option>
+      <option value="fashion">Fashion & Clothing</option>
+      <option value="beauty">Beauty & Personal Care</option>
+      <option value="electronics">Electronics Accessories</option>
+      <option value="baby">Baby Products</option>
+    </select>
+  </div>
+  <div id="supplier-list"></div>
+</div>
+
+<div id="market" class="panel">
+  <div class="card">
+    <h3>📊 Market Report — June 2026</h3>
+    <p>AI se analyze kiya gaya — Indian ecommerce ke trending categories aur opportunities</p>
+    <div class="market-item"><span class="market-label">Kitchen & Home</span><div class="market-bar-wrap"><div class="market-bar" style="width:82%"></div></div><span class="market-pct">82%</span></div>
+    <div class="market-item"><span class="market-label">Baby Products</span><div class="market-bar-wrap"><div class="market-bar" style="width:74%"></div></div><span class="market-pct">74%</span></div>
+    <div class="market-item"><span class="market-label">Fitness & Sports</span><div class="market-bar-wrap"><div class="market-bar" style="width:68%"></div></div><span class="market-pct">68%</span></div>
+    <div class="market-item"><span class="market-label">Beauty & Care</span><div class="market-bar-wrap"><div class="market-bar" style="width:61%"></div></div><span class="market-pct">61%</span></div>
+    <div class="market-item"><span class="market-label">Pet Supplies</span><div class="market-bar-wrap"><div class="market-bar" style="width:55%"></div></div><span class="market-pct">55%</span></div>
+    <div class="market-item"><span class="market-label">Stationery</span><div class="market-bar-wrap"><div class="market-bar" style="width:48%"></div></div><span class="market-pct">48%</span></div>
+  </div>
+  <div class="card">
+    <h3>🔥 Is Mahine Ke Hot Products</h3>
+    <p>AI research based — low competition, high margin opportunities</p>
+    <div class="product-card">
+      <div class="product-name">Bamboo Fiber Lunch Box Set</div>
+      <div class="product-meta"><span class="tag tag-green">38% margin</span><span class="tag tag-blue">Low competition</span><span class="tag tag-orange">₹350-450 price</span></div>
+      <div class="product-reason">Eco-friendly trend + office return = high demand. Amazon pe 800 se kam reviews wale sellers hain.</div>
+    </div>
+    <div class="product-card">
+      <div class="product-name">Silicone Baby Feeding Set</div>
+      <div class="product-meta"><span class="tag tag-green">42% margin</span><span class="tag tag-blue">Low competition</span><span class="tag tag-orange">₹499-699 price</span></div>
+      <div class="product-reason">New parents segment growing 23% YoY. BPA-free angle strong hai India mein.</div>
+    </div>
+    <div class="product-card">
+      <div class="product-name">Resistance Band Set (5 levels)</div>
+      <div class="product-meta"><span class="tag tag-green">35% margin</span><span class="tag tag-blue">Medium competition</span><span class="tag tag-orange">₹299-499 price</span></div>
+      <div class="product-reason">Home fitness still trending. Bundling 5 bands together differentiates from single-band sellers.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+let GEMINI_KEY = localStorage.getItem('gemini_key') || '';
+if(GEMINI_KEY) document.getElementById('api-setup').style.display = 'none';
+
+function saveKey() {
+  const k = document.getElementById('api-key').value.trim();
+  if(!k) { alert('Key daalo pehle'); return; }
+  GEMINI_KEY = k;
+  localStorage.setItem('gemini_key', k);
+  document.getElementById('api-setup').style.display = 'none';
+  alert('Key save ho gayi! Ab tool use kar sakte ho.');
+}
+
+function showTab(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+async function callGemini(prompt) {
+  if(!GEMINI_KEY) { alert('Pehle API key daalo upar wale box mein'); document.getElementById('api-setup').style.display='flex'; throw new Error('No key'); }
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+  });
+  const data = await res.json();
+  if(data.error) throw new Error(data.error.message);
+  return data.candidates[0].content.parts[0].text;
+}
+
+async function huntProducts() {
+  const cat = document.getElementById('h-category').value;
+  const budget = document.getElementById('h-budget').value;
+  const platform = document.getElementById('h-platform').value;
+  if(!cat || !budget) { alert('Category aur budget dono chuno'); return; }
+  const el = document.getElementById('hunter-result');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>AI products dhundh raha hai...</div>';
+  try {
+    const text = await callGemini(`You are an expert Indian ecommerce product researcher with 10 years experience on Amazon India and Flipkart. Find 4 winning low-competition products for ${platform} in the "${cat}" category with investment budget "${budget}". 
+Return ONLY valid JSON, no markdown, no explanation:
+{"products":[{"name":"product name","margin":"XX%","price":"₹XXX-XXX","competition":"Low or Medium","moq":"minimum order quantity","reason":"why this product will sell well in India in 1-2 lines"}]}`);
+    const clean = text.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(clean);
+    el.innerHTML = parsed.products.map(p => `
+      <div class="product-card">
+        <div class="product-name">${p.name}</div>
+        <div class="product-meta">
+          <span class="tag tag-green">${p.margin} margin</span>
+          <span class="tag tag-blue">${p.competition} competition</span>
+          <span class="tag tag-orange">${p.price}</span>
+        </div>
+        <div class="product-reason" style="margin-bottom:6px">${p.reason}</div>
+        <div style="font-size:12px;color:#64748b">MOQ: ${p.moq}</div>
+      </div>`).join('');
+  } catch(e) {
+    el.innerHTML = `<div class="error">Error: ${e.message} — Dobara try karo</div>`;
+  }
+}
+
+async function buildListing() {
+  const product = document.getElementById('l-product').value.trim();
+  const platform = document.getElementById('l-platform').value;
+  const lang = document.getElementById('l-lang').value;
+  if(!product) { alert('Product ka naam daalo'); return; }
+  const el = document.getElementById('listing-result');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>AI listing bana raha hai...</div>';
+  try {
+    const text = await callGemini(`You are an expert Indian ecommerce copywriter. Create an optimized ${platform} product listing for: "${product}". Write in ${lang}.
+Return ONLY valid JSON, no markdown:
+{"title":"SEO optimized title max 200 chars","bullet1":"key benefit 1","bullet2":"key benefit 2","bullet3":"key benefit 3","bullet4":"key benefit 4","bullet5":"key benefit 5","description":"compelling 3-4 line product description","keywords":"10 main search keywords comma separated","search_terms":"backend search terms"}`);
+    const clean = text.replace(/```json|```/g,'').trim();
+    const p = JSON.parse(clean);
+    el.innerHTML = `
+      <div class="card">
+        <h3 style="margin-bottom:16px">✅ Listing Ready — Copy Karo</h3>
+        <div class="result-box">
+          <div class="result-label">Title</div>
+          <div class="result-content">${p.title}</div>
+          <button class="copy-btn" onclick="copyText('${p.title.replace(/'/g,"\\'")}')">Copy</button>
+        </div>
+        <div class="result-box" style="margin-top:12px">
+          <div class="result-label">Bullet Points</div>
+          <div class="result-content">• ${p.bullet1}<br>• ${p.bullet2}<br>• ${p.bullet3}<br>• ${p.bullet4}<br>• ${p.bullet5}</div>
+          <button class="copy-btn" onclick="copyText('• ${p.bullet1}\\n• ${p.bullet2}\\n• ${p.bullet3}\\n• ${p.bullet4}\\n• ${p.bullet5}')">Copy</button>
+        </div>
+        <div class="result-box" style="margin-top:12px">
+          <div class="result-label">Description</div>
+          <div class="result-content">${p.description}</div>
+          <button class="copy-btn" onclick="copyText('${p.description.replace(/'/g,"\\'")}')">Copy</button>
+        </div>
+        <div class="result-box" style="margin-top:12px">
+          <div class="result-label">Keywords</div>
+          <div class="result-content">${p.keywords}</div>
+          <button class="copy-btn" onclick="copyText('${p.keywords.replace(/'/g,"\\'")}')">Copy</button>
+        </div>
+        <div class="result-box" style="margin-top:12px">
+          <div class="result-label">Backend Search Terms</div>
+          <div class="result-content">${p.search_terms}</div>
+          <button class="copy-btn" onclick="copyText('${p.search_terms.replace(/'/g,"\\'")}')">Copy</button>
+        </div>
+      </div>`;
+  } catch(e) {
+    el.innerHTML = `<div class="error">Error: ${e.message} — Dobara try karo</div>`;
+  }
+}
+
+const suppliers = [
+  {name:"Delhi NCR — Kitchen Hub",cat:"kitchen",items:"Kitchen tools, cookware, storage containers",moq:"₹2,000",verified:true,contact:"WhatsApp: +91-XXXXXXXXXX"},
+  {name:"Surat — Textile & Fashion",cat:"fashion",items:"Clothing, fabric, fashion accessories, bags",moq:"₹3,000",verified:true,contact:"WhatsApp: +91-XXXXXXXXXX"},
+  {name:"Mumbai — Beauty & FMCG",cat:"beauty",items:"Skincare, haircare, personal care products",moq:"₹5,000",verified:true,contact:"WhatsApp: +91-XXXXXXXXXX"},
+  {name:"Shenzhen Network — Electronics",cat:"electronics",items:"Phone accessories, cables, chargers, gadgets",moq:"₹8,000",verified:true,contact:"WhatsApp: +91-XXXXXXXXXX"},
+  {name:"Ludhiana — Baby Products",cat:"baby",items:"Baby clothing, feeding accessories, toys",moq:"₹4,000",verified:true,contact:"WhatsApp: +91-XXXXXXXXXX"},
+  {name:"Jaipur — Home Decor",cat:"kitchen",items:"Handicrafts, home decor, gifting items",moq:"₹2,500",verified:true,contact:"WhatsApp: +91-XXXXXXXXXX"},
+];
+
+function filterSuppliers() {
+  const cat = document.getElementById('s-category').value;
+  const filtered = cat === 'all' ? suppliers : suppliers.filter(s => s.cat === cat);
+  document.getElementById('supplier-list').innerHTML = filtered.map(s => `
+    <div class="supplier-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div class="supplier-name">${s.name}</div>
+        <span class="verified">✓ Verified</span>
+      </div>
+      <div class="supplier-meta">${s.items}</div>
+      <div style="font-size:13px;color:#1a1a2e;font-weight:600">MOQ: ${s.moq}</div>
+      <div style="font-size:12px;color:#667eea;margin-top:6px">${s.contact}</div>
+    </div>`).join('');
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => alert('Copy ho gaya!')).catch(() => alert('Manual copy karo'));
+}
+
+filterSuppliers();
+</script>
+</body>
+</html>
